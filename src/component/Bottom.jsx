@@ -12,7 +12,12 @@ function Bottom({ todo, setTodo, setFolderBtnBool }) {
   // 새로운 TODO
   const newTodo = [
     ...todo,
-    { id: todo.length + 1, addList: writeText, checked: false },
+    {
+      id: todo.length + 1,
+      addList: writeText,
+      checked: false,
+      folderName: "집안일",
+    },
   ];
 
   // 중복투두 체크하는 함수
