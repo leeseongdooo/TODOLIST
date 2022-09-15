@@ -1,0 +1,129 @@
+.todolistParent {
+  width: 100%;
+  min-height: 50vh;
+  .NoTodoList {
+    text-align: center;
+  }
+
+  .todolistForm {
+    margin: 5px 0px;
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+
+    p {
+      width: 70%;
+      padding-top: 1.5px;
+      border-bottom: 1px solid black;
+      text-align: left;
+    }
+
+    button {
+      max-width: 20px;
+      min-width: 20px;
+      min-height: 20px;
+      max-height: 20px;
+      border-radius: 100%;
+      border: 1px solid rgba(0, 0, 0, 0.25);
+      background-color: transparent;
+      cursor: pointer;
+    }
+
+    .IconBox {
+      display: flex;
+      width: 20%;
+    }
+
+    .IconButton {
+      margin: 2px;
+      max-width: 20px;
+      min-width: 20px;
+      min-height: 20px;
+      max-height: 20px;
+      cursor: pointer;
+    }
+  }
+
+  // Info 누르면 나오는 Modal창 css
+  .Modal {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    min-height: 100vh;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .InfoBox {
+      position: absolute;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      width: 30%;
+      min-height: 100px;
+      background-color: white;
+      border-radius: 10px;
+      padding: 20px;
+
+      // InfoBox 상단
+      .InfoBoxTop {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+
+        .IconButton {
+          margin: 2px;
+          max-width: 20px;
+          min-width: 20px;
+          min-height: 20px;
+          max-height: 20px;
+          cursor: pointer;
+        }
+      }
+
+      // UpdateBox는 선택한 TODO를 수정하기 위한 용도입니다.
+      .UpdateBox {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        input {
+          width: 100%;
+          min-height: 20px;
+          padding: 5px;
+          border: 1px solid rgb(110, 110, 110);
+          border-radius: 5px;
+        }
+      }
+
+      // InfoBox 버튼에 대한 div 및 button css
+      .InfoButtonBox {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        // InfoBox안에 button에 대한 css
+        button {
+          border-radius: 5px;
+          border: none;
+          min-width: 80px;
+          min-height: 30px;
+          margin: 5px;
+          background-color: royalblue;
+          cursor: pointer;
+          font-size: 14px;
+          font-weight: bold;
+          color: white;
+        }
+
+        button:first-child {
+          background-color: orangered;
+        }
+      }
+    }
+  }
+}

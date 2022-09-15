@@ -1,0 +1,67 @@
+.FolderModal-OutBox {
+  top: 0;
+  left: 0;
+  width: 100%;
+  min-height: 100vh;
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.7);
+  .FolderModal-InBox {
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 30%;
+    min-height: 100px;
+    background-color: white;
+    border-radius: 10px;
+    padding: 20px;
+
+    .Header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .Middle {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      input {
+        width: 100%;
+        min-height: 20px;
+        padding: 5px;
+        border: 1px solid rgb(110, 110, 110);
+        border-radius: 5px;
+      }
+    }
+
+    .Bottom {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      // InfoBox안에 button에 대한 css
+      button {
+        border-radius: 5px;
+        border: none;
+        min-width: 80px;
+        min-height: 30px;
+        margin: 5px;
+        background-color: royalblue;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: bold;
+        color: white;
+      }
+
+      button:first-child {
+        background-color: orangered;
+      }
+    }
+  }
+}

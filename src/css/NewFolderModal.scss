@@ -1,0 +1,57 @@
+.NewFolderBigBox {
+  position: absolute;
+  width: 100%;
+  min-height: 100vh;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.7);
+
+  .NewFolder-ModalBox {
+    background-color: white;
+    border-radius: 10px;
+    padding: 10px;
+    width: 50%;
+    height: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+    .MiddleArea {
+      width: 100%;
+      margin: 10px 0px;
+      .TypingArea {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        input {
+          margin: 3px;
+          padding: 5px;
+          border-radius: 5px;
+          border: 1px solid black;
+        }
+      }
+    }
+
+    .BottomArea {
+      button {
+        min-width: 80px;
+        margin: 2px;
+        padding: 5px;
+        border: none;
+        border-radius: 5px;
+        background-color: royalblue;
+        color: white;
+        font-weight: bold;
+        cursor: pointer;
+      }
+
+      button:last-child {
+        background-color: orange;
+      }
+    }
+  }
+}

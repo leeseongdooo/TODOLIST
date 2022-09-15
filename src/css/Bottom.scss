@@ -1,0 +1,33 @@
+.BottomArea {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  border-top: 1px solid black;
+
+  input {
+    width: 40%;
+    margin: 5px;
+    padding: 5px;
+    text-align: center;
+  }
+
+  .ButtonBox {
+    display: flex;
+    button {
+      width: calc(100% / 3);
+      margin: 2px;
+      padding: 5px;
+      border: none;
+      border-radius: 5px;
+      background-color: royalblue;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:last-child {
+      background-color: orange;
+    }
+  }
+}
