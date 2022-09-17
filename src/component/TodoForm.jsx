@@ -5,7 +5,8 @@ import {
   AiOutlineCloseCircle,
   AiOutlineFolderOpen,
 } from "react-icons/ai";
-import React from "react";
+import { React, useRef, useState } from "react";
+import { useEffect } from "react";
 
 function TodoForm({
   // MainArea로부터 받은 props
@@ -23,6 +24,8 @@ function TodoForm({
     setChooseTodoText(todolist); // chooseTodoText를 todolist로 설정해준다.
   };
 
+  const Storage = JSON.parse(localStorage.getItem("todolist"));
+  const [checkBool, setCheckBool] = useState(Storage[todoId - 1].checked);
   const DeleteTodolist = () => {
     const newTodo = [];
     // todolist를 삭제하면 id가 감소하지 않아 id가 중첩이 되는 경우가 발생하였습니다
@@ -56,10 +59,40 @@ function TodoForm({
     localStorage.setItem("todolist", JSON.stringify(newTodo));
   };
 
+  const clearCheck = useRef();
+
+  useEffect(() => {
+    console.log(Storage);
+  }, [Storage]);
+
   return (
     <div className="todolistForm">
-      <h4>{todoId}</h4>
-      <p>{todolist}</p>
+      <input
+        type="checkbox"
+        ref={clearCheck}
+        checked={checkBool}
+        onClick={() => {
+          const isChecked = clearCheck.current.checked;
+          const updateTodoInfo = {
+            id: todoId,
+            addList: todolist,
+            checked: isChecked,
+            folderName: "", // 나중에 선택한 폴더값으로 이름변경
+          };
+
+          todoInfo[todoId - 1] = updateTodoInfo;
+          localStorage.setItem("todolist", JSON.stringify(todoInfo));
+          setCheckBool(
+            JSON.parse(localStorage.getItem("todolist"))[todoId - 1].checked
+          );
+        }}
+        onChange={() => {
+          console.log(Storage);
+        }}
+      />
+      <p style={checkBool ? { color: "red" } : { color: "black" }}>
+        {todolist}
+      </p>
       <div className="IconBox">
         <AiOutlineFolderOpen className="IconButton" />
         <AiOutlineInfoCircle

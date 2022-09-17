@@ -35,6 +35,7 @@ function MainArea({ todo, setTodo }) {
             setChooseInfo={setChooseInfo} // 선택된 todo의 정보를 설정하기 위한 setChooseInfo
             setTodo={setTodo}
             todoInfo={todo}
+            todoChecked={todos.checked}
             ChooseInfo={ChooseInfo} // 선택된 todo의 정보
           />
         ))

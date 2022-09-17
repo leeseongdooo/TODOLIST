@@ -84,6 +84,40 @@
         }
       }
 
+      .ContentsInfoArea {
+        margin: 5px 0px;
+        border-radius: 10px;
+        padding: 5px;
+
+        button {
+          border-radius: 5px;
+          border: none;
+          min-width: 80px;
+          min-height: 30px;
+          padding: 5px;
+          background-color: royalblue;
+          cursor: pointer;
+          font-size: 14px;
+          font-weight: bold;
+          color: white;
+        }
+
+        .TodoNameArea {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          width: 100%;
+        }
+
+        .TodoGroupNameArea {
+          margin: 5px 0px;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          width: 100%;
+        }
+      }
+
       // UpdateBox는 선택한 TODO를 수정하기 위한 용도입니다.
       .UpdateBox {
         width: 100%;

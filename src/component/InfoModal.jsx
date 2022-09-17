@@ -17,6 +17,15 @@ function InfoModal({
   const [UpdateTodoText, setUpdateTodoText] = useState("");
   // 중복 체크할 변수
   const [checkText, setCheckText] = useState([]);
+
+  // Todo명 수정하기 버튼을 누르면 true로 바꾸기 위해 생성
+  const [EditTodoBtnBool, setEditTodoBtnBool] = useState(false);
+
+  // 그룹수정하기 버튼을 누르면 true로 바꾸기 위해 설정
+  const [EditGroupBtnBool, setEditGroupBtnBool] = useState(false);
+
+  const Storage = JSON.parse(localStorage.getItem("todolist"));
+
   // 중복 체크하는 함수
   const nameCheck = (text) => {
     const DoubleCheck = []; // DoubleCheck Array형식으로 만들어주고
@@ -51,7 +60,7 @@ function InfoModal({
         const updateTodoInfo = {
           id: todos.id,
           addList: UpdateTodoText,
-          checked: false,
+          checked: todo.checked,
         };
         newTodo[todos.id - 1] = updateTodoInfo;
       }
@@ -98,11 +107,41 @@ function InfoModal({
     <div className="Modal">
       <div className="InfoBox">
         <div className="InfoBoxTop">
-          <h3>선택한 TODO: {ChooseTodoText}</h3>
+          <h3>선택한 TODO 정보</h3>
           <AiOutlineCloseCircle
             className="IconButton"
             onClick={ClickExitButton}
           />
+        </div>
+
+        <div className="ContentsInfoArea">
+          <div className="TodoNameArea">
+            <p>TODO명 : {ChooseTodoText}</p>
+            <button
+              onClick={() => {
+                setEditTodoBtnBool(true);
+                setEditGroupBtnBool(false);
+              }}
+            >
+              TODO명 바꾸기
+            </button>
+          </div>
+
+          <div className="TodoGroupNameArea">
+            <p>카테고리: {todo.folderName}</p>
+            <button
+              onClick={() => {
+                setEditTodoBtnBool(false);
+                setEditGroupBtnBool(true);
+              }}
+            >
+              {todo.folderName === "" ? "폴더명 지정" : "수정하기"}
+            </button>
+          </div>
+
+          <div className="TodoCheckedArea">
+            <p>완료여부: {todo.checked ? "끝!" : "아직.."}</p>
+          </div>
         </div>
 
         {/* 선택한 Todo 수정하기 */}
@@ -118,7 +157,19 @@ function InfoModal({
                 UpdateButtonAction();
               }
             }}
+            style={EditTodoBtnBool ? { display: "block" } : { display: "none" }}
           />
+
+          <select
+            style={
+              EditGroupBtnBool ? { display: "block" } : { display: "none" }
+            }
+          >
+            <option>그룹이름1</option>
+            <option>그룹이름1</option>
+            <option>그룹이름1</option>
+            <option>그룹이름1</option>
+          </select>
         </div>
 
         {/* 수정 or 삭제 버튼 */}
