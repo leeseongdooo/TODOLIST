@@ -1,4 +1,4 @@
-import { React, useState, useEffect } from "react";
+import { React, useState, useEffect, useref } from "react";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 
 function InfoModal({
@@ -14,7 +14,7 @@ function InfoModal({
   };
 
   // 업데이트할 input에 값을 저장할 변수
-  const [UpdateTodoText, setUpdateTodoText] = useState("");
+  const [UpdateTodoText, setUpdateTodoText] = useState(ChooseTodoText);
   // 중복 체크할 변수
   const [checkText, setCheckText] = useState([]);
 
@@ -24,6 +24,12 @@ function InfoModal({
   // 그룹수정하기 버튼을 누르면 true로 바꾸기 위해 설정
   const [EditGroupBtnBool, setEditGroupBtnBool] = useState(false);
 
+  const [SelectInfo, setSelectInfo] = useState("");
+
+  // Storage에 저장된 폴더명을 가져오는 변수
+  const FolderStorage = JSON.parse(localStorage.getItem("Folder"));
+
+  // Storage에 저장된 todolist를 가져오는 변수
   const Storage = JSON.parse(localStorage.getItem("todolist"));
 
   // 중복 체크하는 함수
@@ -40,6 +46,9 @@ function InfoModal({
     // checkText를 some하여 중복 되는 값이 있다면 true를 리턴
     return check === UpdateTodoText;
   });
+
+
+  console.log(ChooseInfo)
 
   // useEffect를 통해 updateTodoText의 딜레이를 없앤다.
   useEffect(() => {
@@ -61,6 +70,7 @@ function InfoModal({
           id: todos.id,
           addList: UpdateTodoText,
           checked: todo.checked,
+          folderName: SelectInfo
         };
         newTodo[todos.id - 1] = updateTodoInfo;
       }
@@ -128,19 +138,19 @@ function InfoModal({
           </div>
 
           <div className="TodoGroupNameArea">
-            <p>카테고리: {todo.folderName}</p>
+            <p>카테고리: {Storage[ChooseInfo - 1].folderName}</p>
             <button
               onClick={() => {
                 setEditTodoBtnBool(false);
                 setEditGroupBtnBool(true);
               }}
             >
-              {todo.folderName === "" ? "폴더명 지정" : "수정하기"}
+              {Storage[ChooseInfo - 1].folderName === "" ? "폴더명 지정" : "수정하기"}
             </button>
           </div>
 
           <div className="TodoCheckedArea">
-            <p>완료여부: {todo.checked ? "끝!" : "아직.."}</p>
+            <p>완료여부: {Storage[ChooseInfo - 1].checked ? "끝!" : "아직.."}</p>
           </div>
         </div>
 
@@ -164,11 +174,11 @@ function InfoModal({
             style={
               EditGroupBtnBool ? { display: "block" } : { display: "none" }
             }
+            onChange={(e)=>{setSelectInfo(e.target.value)}}
           >
-            <option>그룹이름1</option>
-            <option>그룹이름1</option>
-            <option>그룹이름1</option>
-            <option>그룹이름1</option>
+            {FolderStorage !== null ? FolderStorage.map((folderInfo) => (
+              <option>{folderInfo.folderName}</option>
+            )) : <option>생성된 폴더가 없어요 ㅜ</option>}
           </select>
         </div>
 

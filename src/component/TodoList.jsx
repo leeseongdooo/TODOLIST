@@ -8,7 +8,7 @@ import { useCallback } from "react";
 
 function TodoList() {
   const [todoList, setTodoList] = useState([]);
-  const [folder, setFolder] = useState([]); // 폴더명
+  const [folder, setFolder] = useState([]); // 폴더명 리스트
   const [FolderBtnBool, setFolderBtnBool] = useState(false);
   const FolderNameStorage = JSON.parse(localStorage.getItem("Folder"));
 

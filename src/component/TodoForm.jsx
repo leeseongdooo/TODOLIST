@@ -18,13 +18,16 @@ function TodoForm({
   todoInfo, // 선택된 todo의 정보
   setInfoButtonClick,
 }) {
+  
   const ClickInfoButton = () => {
     setInfoButtonClick(true);
     setChooseInfo(todoId); // chooseInfo의 값을 todoId로 설정해준다.
     setChooseTodoText(todolist); // chooseTodoText를 todolist로 설정해준다.
   };
 
+  // Storage의 저장된 값들을 가져옵니다.
   const Storage = JSON.parse(localStorage.getItem("todolist"));
+
   const [checkBool, setCheckBool] = useState(Storage[todoId - 1].checked);
   const DeleteTodolist = () => {
     const newTodo = [];
@@ -94,7 +97,6 @@ function TodoForm({
         {todolist}
       </p>
       <div className="IconBox">
-        <AiOutlineFolderOpen className="IconButton" />
         <AiOutlineInfoCircle
           className="IconButton"
           onClick={ClickInfoButton}
