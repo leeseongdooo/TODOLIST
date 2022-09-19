@@ -1,7 +1,7 @@
 .todolistParent {
   width: 100%;
   min-height: 50vh;
-  
+
   .NoTodoList {
     text-align: center;
   }
@@ -126,6 +126,14 @@
         justify-content: center;
         align-items: center;
         input {
+          width: 100%;
+          min-height: 20px;
+          padding: 5px;
+          border: 1px solid rgb(110, 110, 110);
+          border-radius: 5px;
+        }
+
+        .SelectFolderName {
           width: 100%;
           min-height: 20px;
           padding: 5px;

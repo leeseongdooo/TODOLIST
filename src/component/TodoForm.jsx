@@ -18,7 +18,6 @@ function TodoForm({
   todoInfo, // 선택된 todo의 정보
   setInfoButtonClick,
 }) {
-  
   const ClickInfoButton = () => {
     setInfoButtonClick(true);
     setChooseInfo(todoId); // chooseInfo의 값을 todoId로 설정해준다.
@@ -36,15 +35,17 @@ function TodoForm({
     // 선택한 값보다 큰 값들은 기존 todoInfo의 id에서 -1을 하는 작업을 한 코드입니다.
     // todoInfo는 todo이다.
 
-    for (let i = 0; i < todoInfo.length; i++) {
-      setTodo(todoInfo.filter((todos) => todos.id !== todoId)); // todos.id와 todoID가 같은 값은 삭제하기
+    for (let i = 0; i < Storage.length; i++) {
+      setTodo(Storage.filter((todos) => todos.id !== todoId)); // todos.id와 todoID가 같은 값은 삭제하기
+
       // 만약에 todoId가 todoInfo ID보다 크다면
       if (todoId > todoInfo[i].id) {
         // newTodo에 값이 그대로 들어갑니다.
         newTodo.push({
           id: todoInfo[i].id,
           addList: todoInfo[i].addList,
-          checked: todoInfo[i].addList,
+          checked: todoInfo[i].checked,
+          folderName: todoInfo[i].folderName,
         });
       }
       // todoId가 todoInfo[i].id 보다 작다면
@@ -54,10 +55,12 @@ function TodoForm({
         newTodo.push({
           id: MinusId,
           addList: todoInfo[i].addList,
-          checked: todoInfo[i].addList,
+          checked: todoInfo[i].checked,
+          folderName: todoInfo[i].folderName,
         });
       }
     }
+    console.log(todoInfo);
     setTodo(newTodo); // setTodo에 값을 넣습니다.
     localStorage.setItem("todolist", JSON.stringify(newTodo));
   };
@@ -71,16 +74,14 @@ function TodoForm({
   return (
     <div className="todolistForm">
       <input
-        type="checkbox"
-        ref={clearCheck}
-        checked={checkBool}
+        type="checkbox" // type은 체크박스이다.
+        ref={clearCheck} // useRef로 input의 정보를 받아온다. 변수명은 clearCheck
         onClick={() => {
-          const isChecked = clearCheck.current.checked;
           const updateTodoInfo = {
             id: todoId,
             addList: todolist,
-            checked: isChecked,
-            folderName: "", // 나중에 선택한 폴더값으로 이름변경
+            checked: false,
+            folderName: Storage[todoId - 1].folderName, // 나중에 선택한 폴더값으로 이름변경
           };
 
           todoInfo[todoId - 1] = updateTodoInfo;
@@ -88,19 +89,19 @@ function TodoForm({
           setCheckBool(
             JSON.parse(localStorage.getItem("todolist"))[todoId - 1].checked
           );
+
+          console.log("A");
         }}
         onChange={() => {
           console.log(Storage);
         }}
       />
+
       <p style={checkBool ? { color: "red" } : { color: "black" }}>
         {todolist}
       </p>
       <div className="IconBox">
-        <AiOutlineInfoCircle
-          className="IconButton"
-          onClick={ClickInfoButton}
-        />{" "}
+        <AiOutlineInfoCircle className="IconButton" onClick={ClickInfoButton} />{" "}
         {/* INFO 아이콘 */}
         <AiOutlineDelete className="IconButton" onClick={DeleteTodolist} />{" "}
         {/*휴지통 아이콘 */}

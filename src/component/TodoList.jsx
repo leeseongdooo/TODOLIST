@@ -5,6 +5,7 @@ import Bottom from "./Bottom";
 import FolderModal from "./FolderModal";
 import FolderForm from "./FolderForm";
 import { useCallback } from "react";
+import FilterComponent from "./FilterComponent";
 
 function TodoList() {
   const [todoList, setTodoList] = useState([]);
@@ -48,6 +49,12 @@ function TodoList() {
         ) : (
           <p>생성된 폴더가 없습니다.</p>
         )}
+      </div>
+
+      <div className="FilterComponent-OuterBox">
+        <h3>선택된 폴더 </h3>
+
+        <FilterComponent />
       </div>
     </div>
   );

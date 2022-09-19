@@ -16,7 +16,7 @@ function Bottom({ todo, setTodo, setFolderBtnBool }) {
       id: todo.length + 1,
       addList: writeText,
       checked: false,
-      folderName: "집안일",
+      folderName: "선택된 폴더가 없어요",
     },
   ];
 

@@ -13,6 +13,12 @@ function InfoModal({
     setInfoButtonBoolean(false);
   };
 
+  // Storage에 저장된 폴더명을 가져오는 변수
+  const FolderStorage = JSON.parse(localStorage.getItem("Folder"));
+
+  // Storage에 저장된 todolist를 가져오는 변수
+  const Storage = JSON.parse(localStorage.getItem("todolist"));
+
   // 업데이트할 input에 값을 저장할 변수
   const [UpdateTodoText, setUpdateTodoText] = useState(ChooseTodoText);
   // 중복 체크할 변수
@@ -24,13 +30,15 @@ function InfoModal({
   // 그룹수정하기 버튼을 누르면 true로 바꾸기 위해 설정
   const [EditGroupBtnBool, setEditGroupBtnBool] = useState(false);
 
+  // select
   const [SelectInfo, setSelectInfo] = useState("");
 
-  // Storage에 저장된 폴더명을 가져오는 변수
-  const FolderStorage = JSON.parse(localStorage.getItem("Folder"));
-
-  // Storage에 저장된 todolist를 가져오는 변수
-  const Storage = JSON.parse(localStorage.getItem("todolist"));
+  // FolderStorage가 null이 아니라면
+  // if (FolderStorage !== null) {
+  //   setSelectInfo(FolderStorage[0].folderName);
+  // } else {
+  //   setSelectInfo("");
+  // }
 
   // 중복 체크하는 함수
   const nameCheck = (text) => {
@@ -47,8 +55,7 @@ function InfoModal({
     return check === UpdateTodoText;
   });
 
-
-  console.log(ChooseInfo)
+  console.log(ChooseInfo);
 
   // useEffect를 통해 updateTodoText의 딜레이를 없앤다.
   useEffect(() => {
@@ -61,27 +68,31 @@ function InfoModal({
   const [newTodo, setNewTodo] = useState(todo);
   // updateButtonAction은 수정버튼 클릭 시 실행되는 이벤트
   const UpdateButtonAction = () => {
-    // todolist를 돌아서
-    todo.map((todos) => {
-      // map을 돌아서 이름이 같다면
-      if (todos.addList === ChooseTodoText && result != true) {
-        // 선택한 값에 대한 수정본 = updateTodoInfo
-        const updateTodoInfo = {
-          id: todos.id,
-          addList: UpdateTodoText,
-          checked: todo.checked,
-          folderName: SelectInfo
-        };
-        newTodo[todos.id - 1] = updateTodoInfo;
-      }
-    });
+    // 수정할 TODO의 INFO
+    const updateTodoInfo = {
+      id: ChooseInfo,
+      addList: UpdateTodoText,
+      checked: Storage[ChooseInfo - 1].checked,
+      folderName: SelectInfo,
+    };
 
-    if (result !== true) {
-      setTodo(newTodo);
-      localStorage.setItem("todolist", JSON.stringify(newTodo));
+    // result(겹치는 항목)이 없고 || EditToodBtnBool(투두명 수정하기를 안눌렀다면)
+    if (result !== true || EditTodoBtnBool === false) {
+      newTodo[ChooseInfo - 1] = updateTodoInfo; // 값 업데이트 후
+      localStorage.setItem("todolist", JSON.stringify(newTodo)); // 로컬에 저장
       ClickExitButton();
-    } else {
-      alert("중복되는 값이 TODO에 있습니다!");
+    }
+
+    // todos.TODO명과 ChooseTodoText이 같다면
+    else if (result != true) {
+      // 선택한 값 = updateTodoInfo로 수정.
+      newTodo[ChooseInfo - 1] = updateTodoInfo;
+      localStorage.setItem("todolist", JSON.stringify(newTodo)); // 스토리지에 값 저장.
+      ClickExitButton(); // 창닫기 함수를 사용하여 모달창 닫아주기
+    }
+
+    if (result === true && EditTodoBtnBool === true) {
+      alert("중복되는 값이 있습니다.");
     }
   };
 
@@ -145,12 +156,16 @@ function InfoModal({
                 setEditGroupBtnBool(true);
               }}
             >
-              {Storage[ChooseInfo - 1].folderName === "" ? "폴더명 지정" : "수정하기"}
+              {Storage[ChooseInfo - 1].folderName === ""
+                ? "폴더명 지정"
+                : "수정하기"}
             </button>
           </div>
 
           <div className="TodoCheckedArea">
-            <p>완료여부: {Storage[ChooseInfo - 1].checked ? "끝!" : "아직.."}</p>
+            <p>
+              완료여부: {Storage[ChooseInfo - 1].checked ? "끝!" : "아직.."}
+            </p>
           </div>
         </div>
 
@@ -174,11 +189,21 @@ function InfoModal({
             style={
               EditGroupBtnBool ? { display: "block" } : { display: "none" }
             }
-            onChange={(e)=>{setSelectInfo(e.target.value)}}
+            onChange={(e) => {
+              setSelectInfo(e.target.value);
+            }}
+            className="SelectFolderName"
           >
-            {FolderStorage !== null ? FolderStorage.map((folderInfo) => (
-              <option>{folderInfo.folderName}</option>
-            )) : <option>생성된 폴더가 없어요 ㅜ</option>}
+            <option style={FolderStorage !== null ? {} : { display: "none" }}>
+              폴더를 선택해주세요
+            </option>
+            {FolderStorage !== null ? (
+              FolderStorage.map((folderInfo) => (
+                <option>{folderInfo.folderName}</option>
+              ))
+            ) : (
+              <option>생성된 폴더가 없습니다</option>
+            )}
           </select>
         </div>
 
