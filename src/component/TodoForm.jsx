@@ -27,7 +27,7 @@ function TodoForm({
   // Storage의 저장된 값들을 가져옵니다.
   const Storage = JSON.parse(localStorage.getItem("todolist"));
 
-  const [checkBool, setCheckBool] = useState(Storage[todoId - 1].checked);
+  const [checkBool, setCheckBool] = useState("");
   const DeleteTodolist = () => {
     const newTodo = [];
     // todolist를 삭제하면 id가 감소하지 않아 id가 중첩이 되는 경우가 발생하였습니다
@@ -35,10 +35,14 @@ function TodoForm({
     // 선택한 값보다 큰 값들은 기존 todoInfo의 id에서 -1을 하는 작업을 한 코드입니다.
     // todoInfo는 todo이다.
 
+    // 방법 1
+
     for (let i = 0; i < Storage.length; i++) {
       setTodo(Storage.filter((todos) => todos.id !== todoId)); // todos.id와 todoID가 같은 값은 삭제하기
 
       // 만약에 todoId가 todoInfo ID보다 크다면
+
+      //
       if (todoId > todoInfo[i].id) {
         // newTodo에 값이 그대로 들어갑니다.
         newTodo.push({
@@ -60,9 +64,12 @@ function TodoForm({
         });
       }
     }
-    console.log(todoInfo);
-    setTodo(newTodo); // setTodo에 값을 넣습니다.
-    localStorage.setItem("todolist", JSON.stringify(newTodo));
+    localStorage.setItem(
+      "todolist",
+      JSON.stringify(Storage.filter((todos) => todos.id !== todoId))
+    );
+
+    console.log(Storage);
   };
 
   const clearCheck = useRef();
@@ -80,20 +87,13 @@ function TodoForm({
           const updateTodoInfo = {
             id: todoId,
             addList: todolist,
-            checked: false,
+            checked: clearCheck.current.checked,
             folderName: Storage[todoId - 1].folderName, // 나중에 선택한 폴더값으로 이름변경
           };
 
-          todoInfo[todoId - 1] = updateTodoInfo;
-          localStorage.setItem("todolist", JSON.stringify(todoInfo));
-          setCheckBool(
-            JSON.parse(localStorage.getItem("todolist"))[todoId - 1].checked
-          );
-
-          console.log("A");
-        }}
-        onChange={() => {
-          console.log(Storage);
+          setCheckBool(clearCheck.current.checked);
+          Storage[todoId - 1] = updateTodoInfo;
+          localStorage.setItem("todolist", JSON.stringify(Storage));
         }}
       />
 
