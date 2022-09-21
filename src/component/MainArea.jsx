@@ -21,22 +21,24 @@ function MainArea({ todo, setTodo }) {
   // 선택한 값에 대한 info
   const [ChooseInfo, setChooseInfo] = useState();
 
+  const TodoStorage = JSON.parse(localStorage.getItem("todolist"));
+
   return (
     <div className="todolistParent">
-      {todo.length !== 0 ? (
+      {TodoStorage !== null ? (
         // todo 크기만큼 map(반복)하여 TodoList를 그려준다.
-        todo.map((todos) => (
+        TodoStorage.map((todos) => (
           <TodoForm
             key={todos.id} // 각 요소에 대한 key 중첩이 안되게 각 요소의 id값으로 설정했습니다.
             todoId={todos.id} // 선택된 todo의 id
             todolist={todos.addList} //선택된 todo의 todo명
+            todoCheck={todos.checked} //
             setInfoButtonClick={setInfoButtonClick}
             setChooseTodoText={setChooseTodo} // 새로운 Todo로 수정하기 위한 setChooseTodoText
             setChooseInfo={setChooseInfo} // 선택된 todo의 정보를 설정하기 위한 setChooseInfo
             setTodo={setTodo}
             todoInfo={todo}
             todoChecked={todos.checked}
-            ChooseInfo={ChooseInfo} // 선택된 todo의 정보
           />
         ))
       ) : (

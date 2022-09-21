@@ -15,8 +15,9 @@ function TodoForm({
   setChooseTodoText, // 새로운 Todo로 수정하기 위해 만듬
   setChooseInfo, // 선택된 todo의 ID를 설정하기 위해 만듬
   setTodo, // 새롭게 todo를 변경하기 위해 만듬
-  todoInfo, // 선택된 todo의 정보
+  todoInfo, // todo전체
   setInfoButtonClick,
+  todoCheck,
 }) {
   const ClickInfoButton = () => {
     setInfoButtonClick(true);
@@ -25,81 +26,56 @@ function TodoForm({
   };
 
   // Storage의 저장된 값들을 가져옵니다.
-  const Storage = JSON.parse(localStorage.getItem("todolist"));
+  let [Storage, setStorage] = useState(
+    JSON.parse(localStorage.getItem("todolist"))
+  );
 
+  // TODOFORM에 checkbox가 check되었는지 확인.
   const [checkBool, setCheckBool] = useState("");
-  const DeleteTodolist = () => {
-    const newTodo = [];
-    // todolist를 삭제하면 id가 감소하지 않아 id가 중첩이 되는 경우가 발생하였습니다
-    // 이를 해결하고자 새로운 todolist에 선택한 값보다 작은 값들은 기존 todoInfo의 id값을 가져가고
-    // 선택한 값보다 큰 값들은 기존 todoInfo의 id에서 -1을 하는 작업을 한 코드입니다.
-    // todoInfo는 todo이다.
 
-    // 방법 1
-
-    for (let i = 0; i < Storage.length; i++) {
-      setTodo(Storage.filter((todos) => todos.id !== todoId)); // todos.id와 todoID가 같은 값은 삭제하기
-
-      // 만약에 todoId가 todoInfo ID보다 크다면
-
-      //
-      if (todoId > todoInfo[i].id) {
-        // newTodo에 값이 그대로 들어갑니다.
-        newTodo.push({
-          id: todoInfo[i].id,
-          addList: todoInfo[i].addList,
-          checked: todoInfo[i].checked,
-          folderName: todoInfo[i].folderName,
-        });
-      }
-      // todoId가 todoInfo[i].id 보다 작다면
-      else if (todoId < todoInfo[i].id) {
-        // 마이너스 되서 들어감
-        const MinusId = todoInfo[i].id - 1; // 아이디 값을 -1 해줍니다.
-        newTodo.push({
-          id: MinusId,
-          addList: todoInfo[i].addList,
-          checked: todoInfo[i].checked,
-          folderName: todoInfo[i].folderName,
-        });
-      }
-    }
-    localStorage.setItem(
-      "todolist",
-      JSON.stringify(Storage.filter((todos) => todos.id !== todoId))
-    );
-
-    console.log(Storage);
-  };
-
-  const clearCheck = useRef();
+  const clearCheck = useRef(); // input checkbox의 현재 check 상태를 확인하고자 useRef를 사용하여 변수를 만들었습니다.
 
   useEffect(() => {
     console.log(Storage);
-  }, [Storage]);
+  }, [todoInfo]);
+
+  // 삭제 아이콘을 눌렀을 때 실행되는 함수입니다.
+  const DeleteTodolist = () => {
+    const newStorage = JSON.parse(localStorage.getItem("todolist"));
+    const Sample = newStorage.filter((Data) => Data.addList !== todolist);
+
+    for (let i = 0; i < Sample.length; i++) {
+      // 선택된 id가 삭제하는 id보다 작다면
+      if (todoId < Sample[i].id) {
+        Sample[i].id = Sample[i].id - 1;
+      }
+    }
+    console.log(Sample);
+
+    setTodo(Sample);
+    localStorage.setItem("todolist", JSON.stringify(Sample));
+  };
+
+  const CheckBoxFunction = () => {
+    console.log(todoInfo);
+    for (let i = 0; i < todoInfo.length; i++) {
+      if (todoInfo[i].id === todoId) {
+        todoInfo[i].checked = clearCheck.current.checked;
+      }
+    }
+    console.log(todoInfo);
+    localStorage.setItem("todolist", JSON.stringify(todoInfo));
+  };
 
   return (
     <div className="todolistForm">
       <input
         type="checkbox" // type은 체크박스이다.
-        ref={clearCheck} // useRef로 input의 정보를 받아온다. 변수명은 clearCheck
-        onClick={() => {
-          const updateTodoInfo = {
-            id: todoId,
-            addList: todolist,
-            checked: clearCheck.current.checked,
-            folderName: Storage[todoId - 1].folderName, // 나중에 선택한 폴더값으로 이름변경
-          };
-
-          setCheckBool(clearCheck.current.checked);
-          Storage[todoId - 1] = updateTodoInfo;
-          localStorage.setItem("todolist", JSON.stringify(Storage));
-        }}
+        ref={clearCheck} // useRef로 input의 정보를 받아온다. 변수명은 clearChecked
+        onClick={CheckBoxFunction}
       />
 
-      <p style={checkBool ? { color: "red" } : { color: "black" }}>
-        {todolist}
-      </p>
+      <p style={false ? { color: "red" } : { color: "black" }}>{todolist}</p>
       <div className="IconBox">
         <AiOutlineInfoCircle className="IconButton" onClick={ClickInfoButton} />{" "}
         {/* INFO 아이콘 */}

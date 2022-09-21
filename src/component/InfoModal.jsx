@@ -21,8 +21,12 @@ function InfoModal({
 
   // 업데이트할 input에 값을 저장할 변수
   const [UpdateTodoText, setUpdateTodoText] = useState(ChooseTodoText);
+
   // 중복 체크할 변수
   const [checkText, setCheckText] = useState([]);
+
+  // select
+  const [SelectInfo, setSelectInfo] = useState("선택된 값이 없습니다.");
 
   // Todo명 수정하기 버튼을 누르면 true로 바꾸기 위해 생성
   const [EditTodoBtnBool, setEditTodoBtnBool] = useState(false);
@@ -30,43 +34,33 @@ function InfoModal({
   // 그룹수정하기 버튼을 누르면 true로 바꾸기 위해 설정
   const [EditGroupBtnBool, setEditGroupBtnBool] = useState(false);
 
-  // select
-  const [SelectInfo, setSelectInfo] = useState("");
-
-  // FolderStorage가 null이 아니라면
-  // if (FolderStorage !== null) {
-  //   setSelectInfo(FolderStorage[0].folderName);
-  // } else {
-  //   setSelectInfo("");
-  // }
-
   // 중복 체크하는 함수
-  const nameCheck = (text) => {
-    const DoubleCheck = []; // DoubleCheck Array형식으로 만들어주고
-    todo.map((todos) => {
-      // todo맵을 돌아
-      DoubleCheck.push(todos.addList); // DoubleCheck에 값을 넣어준 후
-      setCheckText(DoubleCheck); // CheckText에 DoubleCheck값을 넣어줍니다.
-    });
+  const newCheck = [];
+
+  Storage.map((todo) => {
+    newCheck.push(todo.addList);
+  });
+
+  const nameCheck = () => {
+    console.log(newCheck);
   };
 
-  const result = checkText.some((check) => {
+  const result = newCheck.some((check) => {
     // checkText를 some하여 중복 되는 값이 있다면 true를 리턴
     return check === UpdateTodoText;
   });
 
-  console.log(ChooseInfo);
-
   // useEffect를 통해 updateTodoText의 딜레이를 없앤다.
   useEffect(() => {
-    console.log(UpdateTodoText);
     nameCheck(UpdateTodoText);
+    console.log(UpdateTodoText);
     console.log(result);
   }, [UpdateTodoText]);
 
   // update할때 사용할 변수를 만들어줍니다.
   const [newTodo, setNewTodo] = useState(todo);
-  // updateButtonAction은 수정버튼 클릭 시 실행되는 이벤트
+
+  // updateButtonAction은 수정 버튼 클릭 시 실행되는 이벤트
   const UpdateButtonAction = () => {
     // 수정할 TODO의 INFO
     const updateTodoInfo = {
@@ -81,17 +75,7 @@ function InfoModal({
       newTodo[ChooseInfo - 1] = updateTodoInfo; // 값 업데이트 후
       localStorage.setItem("todolist", JSON.stringify(newTodo)); // 로컬에 저장
       ClickExitButton();
-    }
-
-    // todos.TODO명과 ChooseTodoText이 같다면
-    else if (result != true) {
-      // 선택한 값 = updateTodoInfo로 수정.
-      newTodo[ChooseInfo - 1] = updateTodoInfo;
-      localStorage.setItem("todolist", JSON.stringify(newTodo)); // 스토리지에 값 저장.
-      ClickExitButton(); // 창닫기 함수를 사용하여 모달창 닫아주기
-    }
-
-    if (result === true && EditTodoBtnBool === true) {
+    } else if (result === true && EditTodoBtnBool === true) {
       alert("중복되는 값이 있습니다.");
     }
   };
@@ -149,23 +133,19 @@ function InfoModal({
           </div>
 
           <div className="TodoGroupNameArea">
-            <p>카테고리: {Storage[ChooseInfo - 1].folderName}</p>
+            <p>카테고리: </p>
             <button
               onClick={() => {
                 setEditTodoBtnBool(false);
                 setEditGroupBtnBool(true);
               }}
             >
-              {Storage[ChooseInfo - 1].folderName === ""
-                ? "폴더명 지정"
-                : "수정하기"}
+              수정하기
             </button>
           </div>
 
           <div className="TodoCheckedArea">
-            <p>
-              완료여부: {Storage[ChooseInfo - 1].checked ? "끝!" : "아직.."}
-            </p>
+            <p>완료여부:</p>
           </div>
         </div>
 
